@@ -1,0 +1,1 @@
+/usr/bin/c++ -std=c++11 -O3 -O3 -DNDEBUG -rdynamic CMakeFiles/curve_fitting.dir/main.cpp.o -o curve_fitting  -lg2o_core -lg2o_stuff 

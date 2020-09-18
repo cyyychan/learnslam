@@ -1,0 +1,37 @@
+#include <iostream>
+#include <cmath>
+using namespace std; 
+
+#include <Eigen/Core>
+#include <Eigen/Geometry>
+
+int main( int argc, char** argv )
+{
+    Eigen::Matrix3d rotation_matrix = Eigen::Matrix3d::Identity();
+    Eigen::AngleAxisd rotation_vector(M_PI/4, Eigen::Vector3d(0, 0, 1));
+    cout .precision(3);
+    cout << "rotation matrix =\n" << rotation_vector.matrix() << endl;
+
+    Eigen::Vector3d v (1, 0, 0);
+    Eigen::Vector3d v_rotated = rotation_vector * v;
+    cout << "(1,0,0) after rotation = " << v_rotated.transpose() << endl;
+
+    rotation_matrix = rotation_vector.toRotationMatrix();
+    v_rotated = rotation_matrix * v;
+    cout << "(1,0,0) after rotation = " << v_rotated.transpose() << endl;
+
+    // 欧式变换
+    Eigen::Isometry3d T = Eigen::Isometry3d::Identity();
+    T.rotate(rotation_vector);
+    T.pretranslate(Eigen::Vector3d(1, 3, 4));
+    cout << "Transform matrix = \n" << T.matrix() << endl;
+
+    // 四元数
+    Eigen::Quaterniond q = Eigen::Quaterniond(rotation_vector);
+    cout << "quaternion = \n" << q.coeffs() << endl;
+    q = Eigen::Quaterniond(rotation_matrix);
+    cout << "quaternion = \n" << q.coeffs() << endl;
+    v_rotated = q*v;
+    cout << "(1,0,0) after rotation = " << v_rotated.transpose() << endl;
+    return 0;
+} 
